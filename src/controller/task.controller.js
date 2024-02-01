@@ -1,29 +1,33 @@
 const express = require('express');
 const route = express.Router();
 const { getAllTask, getTaskById, createTask, updataTask, deleteTaskById } = require('../service/task.service');
+const { buildResponse } = require('../helper/buildResponse');
 
 route.get('/', async (req, res) => {
     try {
-        res.send(await getAllTask());
+        const data = await getAllTask();
+        buildResponse(res, data, 200);
     } catch (error) {
-        res.send(error.message);
+        buildResponse(res, err.message, 404)
     }
 })
 
 route.get('/:_id', async (req, res) => {
-    try {      
-        res.send(await getTaskById(req.params._id));
+    try {
+        const data = await getTaskById(req.params._id);
+        buildResponse(res, data, 200);
     } catch (er) {
-        res.send(er.message)
+        buildResponse(res, err.message, 404)
     }
 })
 
 route.post('/', async (req, res) => {
     try {
         const task = req.body;
-        res.send(await createTask(task));
+        const data = await createTask(task);
+        buildResponse(res, data, 200);
     } catch (error) {
-        res.send(error.message);
+        buildResponse(res, err.message, 404)
     }
 })
 
@@ -31,17 +35,19 @@ route.put('/:_id', async (req, res) => {
     try {
         const { _id } = req.params;
         const task = req.body;
-        res.send(await updataTask(_id, task));
+        const data = await updataTask(_id, task)
+        buildResponse(res, data, 200);
     } catch (error) {
-        res.send(error.message);
+        buildResponse(res, err.message, 404)
     }
 });
 
 route.delete('/:_id', async (req, res) => {
     try {
-        res.send(await deleteTaskById(req.params._id));
+        const data = await deleteTaskById(req.params._id);
+        buildResponse(res, data, 200);
     } catch (error) {
-        res.send(error.message);
+        buildResponse(res, err.message, 404)
     }
 });
 
