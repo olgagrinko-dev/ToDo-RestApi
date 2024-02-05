@@ -1,0 +1,117 @@
+$purple_color: #6c63ff;
+$white_color: white;
+$purple_ligth_color: #C3C1E5;
+
+@mixin flex($fd, $ai, $gap) {
+    display: flex;
+    flex-direction: $fd;
+    align-items: $ai;
+    gap: $gap;
+}
+
+@mixin input_btn($border, $br, $pad) {
+    display: block;
+    border: $border;
+    border-radius: $br;
+    padding: $pad
+}
+
+@mixin image-block($default) {
+    background-image: $default;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+.wrapper {
+    @include flex(column, center, 0);
+
+    h1 {
+        font: 500 26px 'Kanit';
+        color: black;
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    .inpCreat {
+        display: flex;
+        gap: 16px;
+        margin: auto;
+        margin-top: 40px;
+        margin-bottom: 40px;
+
+        input {
+            @include input_btn(1px solid $purple_color, 5px, 10px 15px);
+            outline: none;
+
+            &:nth-child(1) {
+                width: 256px;
+            }
+
+            &:nth-child(2) {
+                width: 389px;
+            }
+
+            &::placeholder {
+                color: $purple_ligth_color;
+            }
+        }
+
+        button {
+            @include input_btn(1px solid $purple_color, 5px, 10px 15px);
+            background-color: $purple_color;
+            color: $white_color;
+            cursor: grab;
+        }
+    }
+
+    .inpTask1,
+    .inpTask2,
+    .inpTask3 {
+        display: flex;
+        justify-content: space-between;
+        gap: 50px;
+
+        input {
+            @include input_btn(1px solid $purple_color, 5px, 10px 15px);
+            width: 26px;
+            height: 26px;
+        }
+
+        h2 {
+            font: 500 20px 'Kanit';
+            color: black;
+        }
+
+        p {
+            font: 500 20px 'Kanit';
+            color: #C3C1E5
+        }
+
+        .imgMain {
+            display: flex;
+            gap: 10px;
+
+            .imgPencil {
+                @include image-block(url(./assets/Pencil.svg));
+            }
+
+            .imgBasket {
+                @include image-block(url(./assets/Basket.svg));
+            }
+        }
+    }
+
+    .line {
+        background-image: url(./assets/Line.svg);
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 520px;
+        height: 1px;
+        margin: auto;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}
