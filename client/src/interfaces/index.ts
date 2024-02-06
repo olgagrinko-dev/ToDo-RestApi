@@ -1,4 +1,6 @@
-export interface iArr{
-    id: number,
-    
+export interface iTask {
+    _id: string;
+    title: string;
+    description: string;
+    isCheck: boolean;
 }
