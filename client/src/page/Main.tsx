@@ -1,26 +1,18 @@
 import style from './style.module.scss';
 import axios from 'axios';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { iTask } from '../interfaces';
+
 
 export default function Main() {
     const [inp, setInp] = useState({ title: '', description: '' });
     const [array, setArray] = useState<iTask[]>([]);
-    const descriptionRefs = useRef<Array<HTMLParagraphElement>>([]);
+    // const [isUpdating, setIsUpdating] = useState('');
 
-    function swapFlagCheck(event: React.ChangeEvent<HTMLInputElement>) {
-        const newArray = [...array];
-        newArray[index].isCheck = !newArray[index].isCheck;
-        setArray(newArray)
-        console.log(array);
-        if (descriptionRefs.current[index]) {
-            descriptionRefs.current[index].style.color = newArray[index].isCheck ? 'red'
-        }
-    }
 
     function changeInput(event: React.ChangeEvent<HTMLInputElement>) {
         setInp({ ...inp, [event.target.name]: event.target.value });
-    }
+    };
 
     async function getAllTask() {
         const data = await axios.get('http://localhost:3000/task');
@@ -33,18 +25,18 @@ export default function Main() {
 
     useEffect(() => {
         getAllTask();
-
     })
 
     async function CreateTask() {
-        const data = await axios.post('http://localhost:3000/task', inp);
-        console.log(data);
+        const result = await axios.post(`http://localhost:3000/task`, inp);
+        console.log(result);
     }
-
-    async function deleteTask(event: React.ChangeEvent<HTMLInputElement>) {
-        const filtered: iTask = array.filter((elem: iTask) => elem._id === event.target.id);
-        const data = await axios.delete('http://localhost:3000/task/${filtered.id}');
+    
+    async function deleteTask(id: string) {
+        const data = await axios.delete(`http://localhost:3000/task/${id}`);
         console.log(data);
+        const filtered: iTask[] = array.filter((el: any) => el._id !== id);
+        setArray(filtered);
     }
 
     return (
@@ -56,15 +48,19 @@ export default function Main() {
                 <button onClick={CreateTask}>CREATE</button>
             </div>
 
-            {array.map((el: iTask, index) => <div className={style.inpTask}>
-                <input name={String(index)} onChange={swapFlagCheck} type="checkbox" ></input>
-                <h2 ref={descriptionRefs.current[index]} className={elem.isCheck ? "" : style }{el.title}</h2>
-                <p>{el.description}</p>
-                <div className={style.imgMain}>
-                    <button  className={style.imgPencil}></button>
-                    <button onClick={deleteTask} id={elem._id} className={style.imgBasket}></button>
+            {array.map((el: iTask) => <div className={style.inpWrap}>
+                <div className={style.inpTask}>
+                    <input type="checkbox" ></input>
+                    <h2>{el.title}</h2>
+                    <p>{el.description}</p>
+                    <div className={style.imgMain}>
+                        <button className={style.imgPencil}></button>
+                        <button onClick={() => { deleteTask(el._id) }} className={style.imgBasket}></button>
+                    </div>                    
                 </div>
-            </div>)}
+                <div className={style.line}></div>
+            </div>
+            )}
         </div>
     )
 }

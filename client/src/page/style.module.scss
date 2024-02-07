@@ -23,6 +23,8 @@ $purple_ligth_color: #C3C1E5;
     width: 18px;
     height: 18px;
     object-fit: contain;
+    border: none;
+    background-color: white;
 }
 
 .wrapper {
@@ -81,11 +83,13 @@ $purple_ligth_color: #C3C1E5;
         h2 {
             font: 500 20px 'Kanit';
             color: black;
+            width: 200px;
         }
 
         p {
             font: 500 20px 'Kanit';
-            color: #C3C1E5
+            color: #C3C1E5;
+            width: 300px;
         }
 
         .imgMain {
@@ -98,17 +102,17 @@ $purple_ligth_color: #C3C1E5;
 
             .imgBasket {
                 @include image-block(url(./assets/Basket.svg));
-            }
-        }
+            }                        
+        }    
     }
 
     .line {
         background-image: url(./assets/Line.svg);
         background-repeat: no-repeat;
         background-size: contain;
-        width: 520px;
+        // width: 520px;
         height: 1px;
-        margin: auto;
+        // margin: auto;
         margin-top: 20px;
         margin-bottom: 20px;
     }
