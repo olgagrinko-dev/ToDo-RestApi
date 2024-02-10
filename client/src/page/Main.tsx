@@ -11,14 +11,19 @@ export default function Main() {
         setInp({ ...inp, [event.target.name]: event.target.value });
     };
 
-    function swapFlagCheck(event: React.ChangeEvent<HTMLInputElement>) {
-        const newArray = [...array];
-        newArray[index].isCheck = !newArray[index].isCheck;
-        setArray(newArray)
-        console.log(array);
-        if (descriptionRefs.current[index]) {
-            descriptionRefs.current[index].style.color = newArray[index].isCheck ? 'red'
-        }
+    // function checkBoxChange(event: React.ChangeEvent<HTMLInputElement>) {
+    //     const newArray = [...array];
+    //     newArray[index].isCheck = !newArray[index].isCheck;
+    //     setArray(newArray)
+    //     console.log(array);
+    //     if (descriptionRefs.current[index]) {
+    //         descriptionRefs.current[index].style.color = newArray[index].isCheck ? text-decoration:'line-through'
+    //     }
+    // }
+
+
+    function checkBoxChange(event: React.ChangeEvent<HTMLInputElement>) {
+        setInp({ ...inp, [event.target.name]: event.target.checked });
     }
 
     async function getAllTask() {
@@ -32,7 +37,7 @@ export default function Main() {
 
     useEffect(() => {
         getAllTask();
-    })
+    }, [])
 
     async function CreateTask() {
         const result = await axios.post(`http://localhost:3000/task`, inp);
@@ -62,7 +67,7 @@ export default function Main() {
 
             {array.map((el: iTask, index) => <div className={style.inpWrap}>
                 <div className={style.inpTask}>
-                    <input name={String(index)}  type="checkbox" ></input>
+                    <input onChange = {checkBoxChange} name={String(index)} type="checkbox" ></input>
                     <h2>{el.title}</h2>
                     <p>{el.description}</p>
                     <div className={style.imgMain}>
