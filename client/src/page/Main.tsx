@@ -1,29 +1,27 @@
 import style from './style.module.scss';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { iTask } from '../interfaces';
 
 export default function Main() {
     const [inp, setInp] = useState({ title: '', description: '' });
     const [array, setArray] = useState<iTask[]>([]);
 
+    const descriptionRefs = useRef<Array<HTMLParagraphElement | null>>([]);
+
     function changeInput(event: React.ChangeEvent<HTMLInputElement>) {
         setInp({ ...inp, [event.target.name]: event.target.value });
     };
 
-    // function checkBoxChange(event: React.ChangeEvent<HTMLInputElement>) {
-    //     const newArray = [...array];
-    //     newArray[index].isCheck = !newArray[index].isCheck;
-    //     setArray(newArray)
-    //     console.log(array);
-    //     if (descriptionRefs.current[index]) {
-    //         descriptionRefs.current[index].style.color = newArray[index].isCheck ? text-decoration:'line-through'
-    //     }
-    // }
+    function checkBoxChange(index: number) {
+        const newArray = [...array];
+        newArray[index].isCheck = !newArray[index].isCheck;
+        setArray(newArray);
 
-
-    function checkBoxChange(event: React.ChangeEvent<HTMLInputElement>) {
-        setInp({ ...inp, [event.target.name]: event.target.checked });
+        if (descriptionRefs.current[index]) {
+            descriptionRefs.current[index].style.textDecoration = newArray[index].isCheck ? 'line-through #808080' : "initial";
+            descriptionRefs.current[index].style.color = newArray[index].isCheck ? "#808080" : "initial";
+        } 
     }
 
     async function getAllTask() {
@@ -67,8 +65,8 @@ export default function Main() {
 
             {array.map((el: iTask, index) => <div className={style.inpWrap}>
                 <div className={style.inpTask}>
-                    <input onChange = {checkBoxChange} name={String(index)} type="checkbox" ></input>
-                    <h2>{el.title}</h2>
+                    <input name={String(index)} onChange={() => checkBoxChange(index)} type="checkbox" ></input>
+                    <h2 ref={(ref) => (descriptionRefs.current[index] = ref)}>{el.title}</h2>
                     <p>{el.description}</p>
                     <div className={style.imgMain}>
                         <button onClick={() => { upDataTask() }} className={style.imgPencil}></button>
