@@ -1,4 +1,4 @@
-import Main from './page/Main';
+import Main from './page/main/Main';
 
 export default function App() {
   return (

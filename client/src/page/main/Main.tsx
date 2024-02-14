@@ -1,7 +1,7 @@
 import style from './style.module.scss';
 import axios from 'axios';
 import { useState, useEffect, useRef } from 'react';
-import { iTask } from '../interfaces';
+import { iTask } from '../../interfaces';
 
 export default function Main() {
     const [inp, setInp] = useState({ title: '', description: '' });
