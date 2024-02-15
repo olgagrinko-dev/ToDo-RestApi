@@ -1,6 +1,6 @@
 import style from './style.module.scss';
 
-export default function Note() {
+export default function Modal() {
 
     return (
         <div className={style.wrapper}>
