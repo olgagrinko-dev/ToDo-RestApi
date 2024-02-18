@@ -1,13 +1,11 @@
 import style from './style.module.scss';
 import axios from 'axios';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { iTask } from '../../interfaces';
 
 export default function Main() {
     const [inp, setInp] = useState({ title: '', description: '' });
     const [array, setArray] = useState<iTask[]>([]);
-
-    const descriptionRefs = useRef<Array<HTMLParagraphElement | null>>([]);
 
     function changeInput(event: React.ChangeEvent<HTMLInputElement>) {
         setInp({ ...inp, [event.target.name]: event.target.value });
@@ -17,19 +15,12 @@ export default function Main() {
         const newArray = [...array];
         newArray[index].isCheck = !newArray[index].isCheck;
         setArray(newArray);
-
-        if (descriptionRefs.current[index]) {
-            descriptionRefs.current[index].style.textDecoration = newArray[index].isCheck ? 'line-through #808080' : "initial";
-            descriptionRefs.current[index].style.color = newArray[index].isCheck ? "#808080" : "initial";
-        } 
     }
 
     async function getAllTask() {
         const data = await axios.get('http://localhost:3000/task');
         console.log(data.data);
-        const listTaskCheck = data.data.map((el: iTask) => {
-            return { ...el, isCheck: false }
-        })
+        const listTaskCheck = data.data.map((task: iTask) => ({ ...task, isCheck: false }));
         setArray(listTaskCheck);
     }
 
@@ -50,7 +41,7 @@ export default function Main() {
     async function deleteTask(id: string) {
         const data = await axios.delete(`http://localhost:3000/task/${id}`);
         console.log(data);
-        const newArray: iTask[] = array.filter((el: any) => el._id !== id);
+        const newArray: iTask[] = array.filter((task: any) => task._id !== id);
         setArray(newArray);
     }
 
@@ -63,14 +54,14 @@ export default function Main() {
                 <button onClick={CreateTask}>CREATE</button>
             </div>
 
-            {array.map((el: iTask, index) => <div className={style.inpWrap}>
+            {array.map((task: iTask, index) => <div className={style.inpWrap}>
                 <div className={style.inpTask}>
-                    <input name={String(index)} onChange={() => checkBoxChange(index)} type="checkbox" ></input>
-                    <h2 ref={(ref) => (descriptionRefs.current[index] = ref)}>{el.title}</h2>
-                    <p>{el.description}</p>
+                    <input onChange={() => checkBoxChange(index)} name={String(index)} type="checkbox" ></input>
+                    <h2 className={task.isCheck ? style.checked : style.def}>{task.title}</h2>
+                    <p className={task.isCheck ? style.checked : ''}>{task.description}</p>
                     <div className={style.imgMain}>
                         <button onClick={() => { upDataTask() }} className={style.imgPencil}></button>
-                        <button onClick={() => { deleteTask(el._id) }} className={style.imgBasket}></button>
+                        <button onClick={() => { deleteTask(task._id) }} className={style.imgBasket}></button>
                     </div>
                 </div>
                 <div className={style.line}></div>

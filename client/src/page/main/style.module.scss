@@ -92,6 +92,15 @@ $purple_ligth_color: #C3C1E5;
             width: 300px;
         }
 
+        .checked{
+            text-decoration: line-through;
+            color: #808080;
+        }
+
+        .dev{
+            color: black;
+        }
+
         .imgMain {
             display: flex;
             gap: 10px;
