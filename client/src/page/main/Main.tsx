@@ -2,10 +2,13 @@ import style from './style.module.scss';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { iTask } from '../../interfaces';
+import Modal from '../modal/Modal';
 
 export default function Main() {
     const [inp, setInp] = useState({ title: '', description: '' });
     const [array, setArray] = useState<iTask[]>([]);
+    const [open, setOpen] = useState<boolean>(false);
+    const [activ, setActiv] = useState<iTask>({_id: '', title: '', description: '', isCheck: false });
 
     function changeInput(event: React.ChangeEvent<HTMLInputElement>) {
         setInp({ ...inp, [event.target.name]: event.target.value });
@@ -26,16 +29,18 @@ export default function Main() {
 
     useEffect(() => {
         getAllTask();
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (open) document.body.style.backgroundColor = '#00000025';
+        else document.body.style.backgroundColor = 'white';
+    }, [open]);
+
 
     async function CreateTask() {
         const result = await axios.post(`http://localhost:3000/task`, inp);
         console.log(result);
-    }
-
-    async function upDataTask() {
-        const data = await axios.put(`http://localhost:3000/task/`);
-        console.log(data);
+        location.reload();
     }
 
     async function deleteTask(id: string) {
@@ -43,6 +48,7 @@ export default function Main() {
         console.log(data);
         const newArray: iTask[] = array.filter((task: any) => task._id !== id);
         setArray(newArray);
+        location.reload();
     }
 
     return (
@@ -60,11 +66,12 @@ export default function Main() {
                     <h2 className={task.isCheck ? style.checked : style.def}>{task.title}</h2>
                     <p className={task.isCheck ? style.checked : ''}>{task.description}</p>
                     <div className={style.imgMain}>
-                        <button onClick={() => { upDataTask() }} className={style.imgPencil}></button>
+                        <button onClick={() => { setOpen(true); setActiv(array[index]) }} className={style.imgPencil}></button>
                         <button onClick={() => { deleteTask(task._id) }} className={style.imgBasket}></button>
                     </div>
                 </div>
                 <div className={style.line}></div>
+                {open ? <Modal setOpen={setOpen} task = {active} /> : null};
             </div>
             )}
         </div>

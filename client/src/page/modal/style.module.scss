@@ -1,0 +1,40 @@
+$purple_color: #6c63ff;
+$white_color: white;
+$purple_ligth_color: #C3C1E5;
+
+@mixin flex($fd, $ai, $gap) {
+    display: flex;
+    flex-direction: $fd;
+    align-items: $ai;
+    gap: $gap;
+}
+
+.wrapperModal {
+    @include flex(column, center, 20px);
+    background-color: white;
+    border: 1px solid $purple_color; 
+    border-radius: 5px;
+    padding: 30px;
+    width: 500px;
+    height: 290px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .inpUpDate {
+        @include flex(column, center, 20px);
+        width: 440px;
+        height: 86px;
+    }
+
+    .butUpDate {
+        @include flex(row, center, 20px);
+        justify-content: space-between;
+        background-color: $purple_color;
+        color: $white_color;
+        cursor: grab;
+        width: 110px;
+        height: 38px;
+    }
+}
