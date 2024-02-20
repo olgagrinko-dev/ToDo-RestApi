@@ -1,10 +1,10 @@
+import React, {useState} from 'react';
 import style from './style.module.scss';
-import React, { useState } from 'react';
 import { iTask } from '../../interfaces';
 import axios from 'axios';
 
 interface ModalProps {
-    setOpen: (arg: boolean) => void;
+    setOpen: (arg: boolean) => void ;
     task: iTask;
 }
 
@@ -23,12 +23,12 @@ const Modal: React.FC<ModalProps> = ({ setOpen, task }) => {
             </div>
 
             <div className={style.butUpDate}>
-                <button onClick={() => setOpen(false)}>CANCEL</button>
+                <button onClick={() => setOpen(false)} className={style.cancelButton}>CANCEL</button>
                 <button onClick={async () => {
                     const result = await axios.put(`http://localhost:3000/task/${task._id}`, inp);
                     console.log(result);
                     location.reload();
-                }}>APPLY</button>
+                }} className={style.applyButton}>APPLY</button>
             </div>
         </div>
     )
