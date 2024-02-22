@@ -32,7 +32,7 @@ export default function Main() {
     }, []);
 
     useEffect(() => {
-        if (open) document.body.style.backgroundColor = 'white' ;
+        if (open) document.body.style.backgroundColor = 'white';
         else document.body.style.backgroundColor = 'white';
     }, [open]);
 
@@ -66,13 +66,21 @@ export default function Main() {
                     <h2 className={task.isCheck ? style.checked : style.def}>{task.title}</h2>
                     <p className={task.isCheck ? style.checked : ''}>{task.description}</p>
                     <div className={style.imgMain}>
-                        <button onClick={() => { setOpen(true); setActiv(array[index])}} className={style.imgPencil}></button>
+                        <button onClick={() => { setOpen(true); setActiv(array[index]) }} className={style.imgPencil}></button>
                         <button onClick={() => { deleteTask(task._id) }} className={style.imgBasket}></button>
                         {open ? <Modal setOpen={setOpen} task={active} /> : null}
                     </div>
                 </div>
                 <div className={style.line}></div>
             </div>
+
+ {/* array.length == 0 ? (
+                <div className={style.empty}>
+                    <div className={style.image}></div>
+                    <h2>Empty...</h2>
+                </div>
+                ) : (
+                <div className={style.toDoListItems}> */}
             )}
         </div>
     )
